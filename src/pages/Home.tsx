@@ -6,7 +6,6 @@ import Nav from '../components/Nav'
 const Home = () => {
     return (
         <div>
-            <CryptoBanner banner_headline='Cryptocurrency price list' banner_description='All cryptocurrencies ranked by market cap.' />
             <CoinListTable />
         </div>
     )

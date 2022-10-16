@@ -1,12 +1,22 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { BsFillHeartFill } from 'react-icons/bs'
-import { BiSearch } from 'react-icons/bi'
-import { IoClose, IoNotifications } from 'react-icons/io5'
-import { Link } from 'react-router-dom';
+import { IoNotifications } from 'react-icons/io5'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode'
+import { AuthContext } from '../context/AuthContext';
 
 function Nav() {
-    const [searchText, setSearchText] = useState('');
     const [showNotifications, setShowNotifications] = useState(false)
+    const [userLoggedIn, setUserLoggedIn] = useContext(AuthContext)
+    const location = useLocation()
+    const handleLogout = () => {
+        localStorage.removeItem('crypto')
+        setUserLoggedIn({
+            status: false,
+            user: ""
+        })
+    }
+
     return (
         <div className="">
             <div className="container mx-auto py-4">
@@ -16,15 +26,6 @@ function Nav() {
 
                     {/* right flex section starts  */}
                     <div className="flex items-center space-x-3">
-                        {/* search bar start  */}
-                        <div className="flex items-center relative">
-                            <input type="text" name="" id="" className='border py-2 pl-3 pr-9 rounded-md w-80 outline-primary-base' placeholder='Search crypto coin....' value={searchText} onChange={(e) => setSearchText(e.target.value)} />
-                            {
-                                searchText.length > 0 ? <IoClose className='absolute right-3 text-gray-500 cursor-pointer' onClick={() => setSearchText('')} /> : <BiSearch className='absolute right-3 text-gray-500' />
-
-                            }
-
-                        </div>
                         {/* notification button starts  */}
                         <div className="relative ">
                             <button className='py-3 px-3 bg-primary-base text-white rounded-md cursor-pointer' onClick={() => setShowNotifications(!showNotifications)}>
@@ -52,15 +53,23 @@ function Nav() {
                             </div>
                         </Link>
                         {/* login signup section  */}
-                        <div className="flex items-center">
-                            <Link to={'/login'}>
-                                <p className='transition hover:underline hover:text-primary-base'>Login</p>
-                            </Link>
-                            <span className='mx-1'> / </span>
-                            <Link to='/signup'>
-                                <p className='transition hover:underline hover:text-primary-base'>Signup</p>
-                            </Link>
-                        </div>
+                        {
+                            userLoggedIn?.status === true ? <div className="bg-gray-50 py-2 px-3 rounded-md">
+                                <p>
+                                    <span className='uppercase font-bold'>{userLoggedIn.user.split(' ')[0].split('')[0] + userLoggedIn.user.split(' ')[1].split('')[0]}</span> | <span className='hover:text-primary-base cursor-pointer' onClick={() => handleLogout()}>Logout</span>
+                                </p>
+                            </div>
+                                :
+                                <div className="flex items-center">
+                                    <Link to={'/login'}>
+                                        <p className={location.pathname === '/login' ? 'transition underline text-primary-base' : 'transition hover:underline hover:text-primary-base'}>Login</p>
+                                    </Link>
+                                    <span className='mx-1'> / </span>
+                                    <Link to='/signup'>
+                                        <p className={location.pathname === '/signup' ? 'transition underline text-primary-base' : 'transition hover:underline hover:text-primary-base'}>Signup</p>
+                                    </Link>
+                                </div>
+                        }
                     </div>
                     {/* right flex section ends */}
                 </div>
