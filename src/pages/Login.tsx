@@ -1,8 +1,6 @@
 import axios from 'axios';
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
 type Inputs = {
     email: string,
     password: string
@@ -14,7 +12,6 @@ type FieldValidationErros = {
     value: string
 }[]
 const Login = () => {
-    const [userLoggedIn, setUserLoggedIn] = useContext(AuthContext)
 
     const [loading, setLoading] = useState(false);
     const [apiRes, setApiRes] = useState({
@@ -25,7 +22,6 @@ const Login = () => {
     const [validationsErr, setValidationsErr] = useState<FieldValidationErros>([])
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
-    const navigate = useNavigate()
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {

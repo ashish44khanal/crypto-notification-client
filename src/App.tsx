@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {
   BrowserRouter,
   Routes,
   Route,
-  useNavigate,
   redirect,
 } from "react-router-dom";
 import Home from './pages/Home';
@@ -15,6 +13,8 @@ import Watchlist from './pages/Watchlist';
 import Nav from './components/Nav';
 import jwt_decode from 'jwt-decode'
 import { AuthContext, authType } from './context/AuthContext';
+import PrivateRoutes from './HOC/PrivateRoutes';
+import NotFound from './pages/NotFound';
 
 
 
@@ -64,15 +64,23 @@ function App() {
   return (
     <div>
       <BrowserRouter>
+
         <AuthContext.Provider value={[userLoggedIn, setUserLoggedIn]}>
           <Nav />
         </AuthContext.Provider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
-          <Route path='/watchlist' element={<Watchlist />} />
-        </Routes>
+
+        <AuthContext.Provider value={[userLoggedIn, setUserLoggedIn]}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route element={<PrivateRoutes />}>
+              <Route path='/watchlist' element={<Watchlist />} />
+            </Route>
+            {userLoggedIn.status === false && <Route path='/login' element={<Login />} />}
+            <Route path='/signup' element={<Signup />} />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+        </AuthContext.Provider>
+
       </BrowserRouter>
 
     </div>
