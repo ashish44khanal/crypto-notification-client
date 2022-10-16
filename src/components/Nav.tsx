@@ -3,9 +3,9 @@ import { BsFillHeartFill } from 'react-icons/bs'
 import { IoNotifications } from 'react-icons/io5'
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import Notification from './Notification';
 
 function Nav() {
-    const [showNotifications, setShowNotifications] = useState(false)
     const [userLoggedIn, setUserLoggedIn] = useContext(AuthContext)
 
     const location = useLocation()
@@ -29,23 +29,7 @@ function Nav() {
                     <div className="flex items-center space-x-3">
                         {/* notification button starts  */}
                         {userLoggedIn?.status === true &&
-                            <div className="relative ">
-                                <button className='py-3 px-3 bg-primary-base text-white rounded-md cursor-pointer' onClick={() => setShowNotifications(!showNotifications)}>
-                                    <IoNotifications className='font-bold text-xl' />
-                                </button>
-                                <div className="absolute -top-2 -right-2 h-6 w-6 bg-optional text-white rounded-full flex flex-col justify-center items-center font-bold p-2">
-                                    <p className='text-sm'>21</p>
-                                </div>
-                                {/* notification dropdown section  */}
-                                <div className={`absolute rounded  w-[26vw] right-0 text-black z-10 top-12 transition-all duration-300 text-sm ${showNotifications ? 'h-full py-2 duration-500' : 'h-0 overflow-hidden  '}`}>
-                                    <p className='bg-gray-200 font-medium p-4 border-b border-b-gray-200 cursor-pointer hover:bg-green-50 transition'>BTC is on the move, The Price is down -3.5% in 24 hrs to $34900 4.</p>
-                                    <p className='bg-gray-50 p-4 border-b border-b-gray-200 cursor-pointer hover:bg-green-50 transition'>BTC is on the move, The Price is down -3.5% in 24 hrs to $34900 4.</p>
-                                    <p className='bg-gray-50 p-4 border-b border-b-gray-200 cursor-pointer hover:bg-green-50 transition'>BTC is on the move, The Price is down -3.5% in 24 hrs to $34900 4.</p>
-                                    <p className='bg-gray-200 font-medium p-4 border-b border-b-gray-200 cursor-pointer hover:bg-green-50 transition'>BTC is on the move, The Price is down -3.5% in 24 hrs to $34900 4.</p>
-                                    <p className='bg-gray-50 p-4 border-b border-b-gray-200 cursor-pointer hover:bg-green-50 transition'>BTC is on the move, The Price is down -3.5% in 24 hrs to $34900 4.</p>
-
-                                </div>
-                            </div>
+                            <Notification />
                         }
 
                         {/* watch list section  */}
